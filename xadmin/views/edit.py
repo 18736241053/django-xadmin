@@ -151,6 +151,11 @@ class ModelFormAdminView(ModelAdminView):
         Returns a Form class for use in the admin add view. This is used by
         add_view and change_view.
         """
+        if 'fields' in kwargs:
+            fields = kwargs.pop('fields')
+        else:
+            fields = self.fields and list(self.fields)
+
         if self.exclude is None:
             exclude = []
         else:
@@ -160,12 +165,14 @@ class ModelFormAdminView(ModelAdminView):
             # Take the custom ModelForm's Meta.exclude into account only if the
             # ModelAdmin doesn't define its own.
             exclude.extend(self.form._meta.exclude)
-        # if exclude is an empty list we pass None to be consistant with the
+        # if exclude/fields is an empty list we pass None to be consistant with the
         # default on modelform_factory
         exclude = exclude or None
+        fields = fields or None
         defaults = {
             "form": self.form,
             "exclude": exclude,
+            "fields": fields,
             "formfield_callback": self.formfield_for_dbfield,
         }
         defaults.update(kwargs)

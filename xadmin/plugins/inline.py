@@ -157,6 +157,7 @@ class InlineModelAdmin(ModelFormAdminView):
             "formset": self.formset,
             "fk_name": self.fk_name,
             "exclude": exclude,
+            "fields": self.fields and list(self.fields) or None,
             "formfield_callback": self.formfield_for_dbfield,
             "extra": self.extra,
             "max_num": self.max_num,
